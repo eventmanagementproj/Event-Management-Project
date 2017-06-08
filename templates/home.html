@@ -1,0 +1,78 @@
+<html>
+    <head>
+        <!-- Colour scheme
+            #e7f0d2
+            #d2ea9b
+            #abcb89
+            #83b271
+        -->
+        <title>Event Management!</title>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <style>
+            .navbar {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #83b271;
+            }
+            .navbar li {
+                float: left;
+            }
+            .navbar li a {
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+            .navbar li a:hover{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar li a:hover:not(.active) {
+                background-color: #abcb89;
+                text-decoration: none;
+            }
+            .active {
+                background-color: #d2ea9b;
+                text-decoration: none;
+                font-weight: bold;
+            }
+            .right{
+                float: right;
+            }
+            html {
+                font-family: verdana;
+            }
+        </style>
+    </head>
+    <body>
+        <ul class="navbar">
+            <li><a href="/"class="active">Home</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/signup">Signup</a></li>
+            <li><a href="/timeline">Timeline</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/events">Events</a></li>
+            {% if username %}<li><a href="/account" class="right">Hey {{ username }}! / Account Settings</a></li>{% endif %}
+            {% if username %}<li><a href="/logout" class="right">Logout</a></li>{% endif %}
+        </ul>
+        {% if error %}
+        <div class="w3-panel w3-red w3-round-large">
+            <p style="font-size:32px;"><h3><strong>Error</strong></h3><p>{{ error }}</p></p>
+        </div>
+        {% endif %}
+        {% if success %}
+        <div class="w3-panel w3-green w3-round-large">
+            <p style="font-size:32px;"><h3><strong>Success</strong></h3><p>{{ success }}</p></p>
+        </div>
+        {% endif %}
+        {% if info %}
+        <div class="w3-panel w3-blue w3-round-large">
+            <p style="font-size:32px;"><h3><strong>Information</strong></h3><p>{{ info }}</p></p>
+        </div>
+        {% endif %}
+        <p style="font-size: 32px;">The event management project homepage.</p>
+    </body>
+</html>

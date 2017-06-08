@@ -1,0 +1,262 @@
+<html>
+    <head>
+        <!-- Colour scheme
+            #e7f0d2
+            #d2ea9b
+            #abcb89
+            #83b271
+        -->
+        <title>Event Management Timeline!</title>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <style>
+            .navbar {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #83b271;
+            }
+            .navbar li {
+                float: left;
+            }
+            .navbar li a {
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+            .navbar li a:hover{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar li a:hover:not(.active) {
+                background-color: #abcb89;
+                text-decoration: none;
+            }
+            .active {
+                background-color: #d2ea9b;
+                text-decoration: none;
+                font-weight: bold;
+            }
+            .right{
+                float: right;
+            }
+            html {
+                font-family: verdana;
+            }
+            .timeline-header{
+                font-size: 64px;
+                margin: 20px;
+            }
+            .timeline li{
+                font-size: 24px;
+                list-style-type: none;
+            }
+            .author {
+                list-style-type: none;
+                font-size: 18px;
+                font-style: italic;
+                margin: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <ul class="navbar">
+            <li><a href="/">Home</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/signup">Signup</a></li>
+            <li><a href="/timeline"class="active">Timeline</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/events">Events</a></li>
+            {% if username %}<li><a href="/account" class="right">Hey {{ username }}! / Account Settings</a></li>{% endif %}
+            {% if username %}<li><a href="/logout" class="right">Logout</a></li>{% endif %}
+        </ul>
+        {% if info %}
+        <div class="w3-panel w3-blue w3-round-large">
+            <p style="font-size:32px;"><h3><strong>Information</strong></h3><p>{{ info }}</p></p>
+        </div>
+        {% endif %}
+        <p style="font-size: 32px;">The event management project timeline. Read on to find out more.</p>
+        <p class="timeline-header">8/6/2017</p>
+        <ul class="timeline">
+            <li class="author">~Toom</li>
+            <li>Tidied up database again and worked on features with Ender.</li>
+            <li>Bringing source code to github.</li>
+        </ul>
+        <p class="timeline-header">8/6/2017</p>
+        <ul class="timeline">
+            <li class="author">~Ender</li>
+            <li>Added in forgot username, change email and delete account features.</li>
+        </ul>
+        <p class="timeline-header">7/6/2017</p>
+        <ul class="timeline">
+            <li class="author">~Ender</li>
+            <li>Added in forgot password, change username and change password features.</li>
+        </ul>
+        <p class="timeline-header">7/6/2017</p>
+        <ul class="timeline">
+            <li class="author">~Toom</li>
+            <li>Still tidying up the website.</li>
+            <li>Started work on account features.</li>
+        </ul>
+        <p class="timeline-header">6/6/2017</p>
+        <ul class="timeline">
+            <li class="author">~Toom</li>
+            <li>Solved the problem. I had to list the full path and not the relative path.</li>
+            <li>Answer logging works</li>
+            <li>You can view all form answers.</li>
+            <li>You can download a csv file with all answers inside for easy reference.</li>
+            <li>Tidying up the website.</li>
+        </ul>
+        <p class="timeline-header">5/6/2017</p>
+        <ul class="timeline">
+            <li class="author">~Toom</li>
+            <li>Form creation is fixed.</li>
+            <li>Form editing is fixed.</li>
+            <li>Form manager viewing is fixed.</li>
+            <li>Going to take the plunge into questions. Wish me good luck!</li>
+            <li>Questions work.You can create questions.</li>
+            <li>You can answer forms but they can't be processed.</li>
+            <li>Please help with CSVs if you know how.</li>
+            <li>I need to know how to create a new csv if it doesn't exist because when I try to it says file or directory doesn't exist.</li>
+        </ul>
+        <p class="timeline-header">4/6/2017</p>
+        <ul class="timeline">
+            <li class="author">~Toom</li>
+            <li>Switched username cookie to a session for security.</li>
+            <li>Session cookie content is encrypted.</li>
+            <li>Not going to change the success cookie.</li>
+            <li>Forms table created though with some problems.</li>
+            <li>Finally thought of the forms logic.</li>
+            <li>Working on forms creation.</li>
+        </ul>
+        <p class="timeline-header">3/6/2017</p>
+        <ul class="timeline">
+            <li class="author">~Ender</li>
+            <li>Commented code, though you can't see it.</li>
+        </ul>
+        <p class="timeline-header">3/6/2017</p>
+        <ul class="timeline">
+            <li class="author">~Toom</li>
+            <li>You can now edit events.</li>
+            <li>However, you cannot leave fields blank and must instead put "NIL" if you want it to be unchanged.</li>
+            <li>I hope this minor problem will not disturb you.</li>
+            <li>You can delete events, maybe if they are over?</li>
+            <li>We should start clearing all the spam events which were created for testing.</li>
+            <li>Accounts and events cleaned up.</li>
+            <li>IDs are fixed.</li>
+            <li>Trying to work on form creation.</li>
+            <li>Please help us if you know how to do this!</li>
+            <li>We will never achieve the standard of google forms.</li>
+            <li>I'm thinking of letting people put dates for their events, like a start date and end date. Should I do this?</li>
+            <li>And I'm really thinking about trying to fix image uploading again.</li>
+        </ul>
+        <p class="timeline-header">2/6/2017</p>
+        <ul class="timeline">
+            <li class="author">~Ender</li>
+            <li>Planning to make an edit event feature.</li>
+            <li>If you make a mistake in the evnt you can rectify it.</li>
+        </ul>
+        <p class="timeline-header">26/5/2017</p>
+        <ul class="timeline">
+            <li class="author">~Toom</li>
+            <li>Updates for the public.</li>
+            <li>The public and users can now search for events.</li>
+            <li>Exact search terms have to be used.</li>
+            <li>The different search types are User, ID, Name and Description.</li>
+            <li>An example search could be "Event Management Project Release" with the type "Name".</li>
+            <li>Non-exact searches do not work.</li>
+            <li>For example, if the event name is "Event Management Project Release", the search "Project" with the type "Name" will not work.</li>
+            <li>We are working on this</li>
+            <li>Contact us if you know how to use something similar to a python in statement in flask sqlalchemy.</li>
+        </ul>
+        <p class="timeline-header">25/5/2017</p>
+        <ul class="timeline">
+            <li class="author">~Toom</li>
+            <li>Really big updates!</li>
+            <li>A confirmation system has been set up for security.</li>
+            <li>It uses email confirmation for your accounts.</li>
+            <li>You can now see all your events from the manage events page.</li>
+        </ul>
+        <p class="timeline-header">25/5/2017</p>
+        <ul class="timeline">
+            <li class="author">~Ender</li>
+            <li>Tried to make an account confirmation system.</li>
+            <li>It's half done.</li>
+        </ul>
+        <p class="timeline-header">19/5/2017</p>
+        <ul class="timeline">
+            <li class="author">~Toom</li>
+            <li>You can create events now.</li>
+            <li>We had to remove the image function for creating events as we cannot get it working, unless you know how.</li>
+            <li>Creating events has never been so simple!</li>
+        </ul>
+        <p class="timeline-header">19/5/2017</p>
+        <ul class="timeline">
+            <li class="author">~Ender</li>
+            <li>Second version of events page set up.</li>
+            <li>It now links you to the pages to create a new event and manage previous events.</li>
+            <li>However, the create new event and manage events page still do not work.</li>
+        </ul>
+        <p class="timeline-header">12/5/2017</p>
+        <ul class="timeline">
+            <li class="author">~Toom</li>
+            <li>You can now contact us via the contact page.</li>
+            <li>And please do not spam our contact form.</li>
+            <li>If not we shall ban you forever.</li>
+        </ul>
+        <p class="timeline-header">9/5/2017</p>
+        <ul class="timeline">
+            <li class="author">~Ender</li>
+            <li>First version of events page set up.</li>
+            <li>Even though you can't do anything yet.</li>
+        </ul>
+        <p class="timeline-header">6/5/2017</p>
+        <ul class="timeline">
+            <li class="author">~Toom</li>
+            <li>We have forced HTTPS for your security.</li>
+            <li>Our mail server works.</li>
+        </ul>
+        <p class="timeline-header">29/4/2017</p>
+        <ul class="timeline">
+            <li class="author">~Toom</li>
+            <li>The login and signup page aren't secure.</li>
+            <li>It will be soon when your developer makes the site go HTTPS!</li>
+            <li>Your developer here spent one hour trying to get an SSL with letsencrypt but it doesn't work.</li>
+            <li>Then Glenn from the PythonAnywhere support team says there is no need to do that.</li>
+            <li>I have asked him for advice on how to make our site secure.</li>
+            <li>if you have a solution, contact us with the contact form.</li>
+            <li>I have added this page so the developers can get advice from the public and allow you guys to read through the changes.</li>
+            <li>Got rid of bootstrap.</li>
+            <li>Using the w3schools stylesheet. Why? Because we included alerts!</li>
+            <li>Alerts have four different categories. Error. Success. Warning. Info.</li>
+            <li>However, the alerts don't work with variables in a url_for.</li>
+            <li>I have used cookies for the success alerts, while the rest are still  okay.</li>
+            <li>This means that they don't go away.</li>
+            <li>If you can fix the problem with the url_for, contact us with your solution.</li>
+            <li>There is a weird line below the body.</li>
+            <li>Please take a look at the HTML and CSS and contact us with your solution.</li>
+            <li>Your developer tried to set up a maling system using flask-mail.</li>
+            <li>Installation didn't work because of lack of permission.</li>
+            <li>After reading the forums, I got it working with --user.</li>
+            <li>I can't import it.</li>
+            <li>I have tried flask-mail, flask_mail, flask.ext.mail, flask.mail, flaskext.mail, and they all do not work.</li>
+            <li>Once again, contact us with your solution. If you need to know, I am using the github version.</li>
+        </ul>
+        <p class="timeline-header">28/4/2017</p>
+        <ul class="timeline">
+            <li class="author">~Toom</li>
+            <li>Passwords are now hashed for your safety (and privacy).</li>
+            <li>Logins work now! A huge success! Easier than I expected.</li>
+            <li>You can't do anything if you login.</li>
+            <li>You can logout as well.</li>
+        </ul>
+        <p class="timeline-header">27/4/2017</p>
+        <ul class="timeline">
+            <li class="author">~Toom</li>
+            <li>The signup system is working!</li>
+            <li>Passwords are not hashed at all. The developers have a fun time reading them.</li>
+        </ul>
+    </body>
+</html>
