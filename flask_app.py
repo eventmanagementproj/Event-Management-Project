@@ -1,4 +1,3 @@
-#DONE WITH EVERYTHING EXCEPT FORM QUESTIONS AND ACCOUNT SETTINGS. WE STILL NEED TO EDIT CODE AND IMPROVE IT. NOT FINAL.
 #importing libraries
 from flask import Flask, render_template, request, redirect, url_for, make_response, session #import all flask functions needed
 from flask.ext.sqlalchemy import SQLAlchemy #import database
@@ -170,8 +169,9 @@ def resetPassword(userHash): #reset password function
         else: #username doesn't match
             return render_template("confirmation.html", error = "Invalid username or password.") #return with error
 
-@app.route("/account/forgot_username", methods=["GET", "POST"]) #allows user to recall list of usernames.
-def forgotUsername():
+#allows user to get their username(s)
+@app.route("/account/forgot_username", methods=["GET", "POST"]) #URL to allow user to recall list of username(s)
+def forgotUsername(): #function to get username(s)
     if request.method=="GET": #user loads page
         if "username" in session: #user is logged in
             username = session['username'] #get username
@@ -180,16 +180,15 @@ def forgotUsername():
             username = None #no username
             return render_template("forgot_username.html", username=username, info = "If you forgot your username, type in your email so we can send you a list of all your previous usernames.") #render page with info
     elif request.method == "POST": #user submits form
-        email = request.form['email']
-        usernames = []
-        users = User.query.filter_by(email=email).all()
-        for user in users:
-            usernames.append(user.username)
+        email = request.form['email'] #get email
+        usernames = [] #empty list for usernames
+        users = User.query.filter_by(email=email).all() #get usernames linked to email
+        for user in users: #for every user found
+            usernames.append(user.username) #add username to list
         msg = Message('Event Management Account Usernames associated with ' + str(email), sender = 'eventmanagementproj@gmail.com', recipients = [email]) #prepare message to be sent to user
         msg.html = '<h1 style="text-align: center;">Hey ' + str(email) + "!</h1></br>" + "<h2 style='text-align: center;'>We have received your application to get your usernames.</h2></br>" + '<h3 style="text-align: center;">Here is a list of your usernames:</h3></br><h3 style="text-align: center;">' + "</br>".join(usernames) + "</h3>" + '</br><h4 style="text-align: center;">If you have any queries you may send an email to us at eventmanagementproj@gmail.com!</h4>' #code for body of email
         mail.send(msg) #send message to user
-        return redirect(url_for("home", success="We have sent an email with a list of your usernames."))
-
+        return redirect(url_for("home", success="We have sent an email with a list of your usernames.")) #return with success message
 
 #logs user out of account
 @app.route('/logout', methods=["GET"]) #URL for logout
@@ -496,10 +495,10 @@ def manageForms(id): #function to see all forms
             if username == event.user: #user is authorised
                 return render_template("manage_forms.html", username=username, forms=forms, success="Found all your forms!", info="Manage all your forms here.") #render page with success message
             else: #not authorised
-                forms = [Form(id=id,name="HEY!",user="Somebody Else",event="Unknown",description="This isn't your event, so don't touch it.",questions=[],answers="")] #Troll form
+                forms = [Form(id=id,name="HEY!",user="Somebody Else",event="Unknown",description="This isn't your event, so don't touch it.",questions=[],answers="")] #troll form
                 return render_template("manage_forms.html", username=username, forms=forms, success="Found a form!", info="Manage all your forms here.") #render troll page
         else: #no such event
-            forms = [Form(id=id,name="HEY!",user="To be discovered",event="Unknown", description="The event doesn't even exist yet. Or it has been deleted.",questions=[],answers="")] #Troll form
+            forms = [Form(id=id,name="HEY!",user="To be discovered",event="Unknown", description="The event doesn't even exist yet. Or it has been deleted.",questions=[],answers="")] #troll form
             return render_template("manage_forms.html", username=username, forms=forms, success="Found a form!", info="Manage all your forms here.") #render troll page
 
 #lets users edit form details
@@ -552,175 +551,115 @@ def editForm(id): #function to edit form
         else: #no such form
             return redirect(url_for('manageEvents', error="The form doesn't exist.")) #return with error message
 
-@app.route("/events/forms/questions/<id>", methods=["GET", "POST"])
-def manageEventFormsQuestions(id):
-    if request.method == "GET":
-        if "username" in session:
-            username = session['username']
-        else:
-            username = None
-        form = Form.query.filter_by(id=id).first()
-        if username == form.user:
-            questions = ast.literal_eval(form.questions)
-            return render_template("forms_questions.html", username=username, form=form, questions=questions)
-        else:
-            form = Form(id=id,name="HEY!",user="Somebody Else",event="Unknown",description="This isn't your event, so don't touch it.",questions=[[1,"Are you dumb?","This is not a test.","radio",["YES","NO"]],[2, "Should you be here?","Is this your event?","radio",["YES","NO"]]],answers="")
-            questions = form.questions
-            return render_template("forms_questions.html", username=username, form=form, questions=questions)
-    elif request.method == "POST":
-        if "username" in session:
-            username = session['username']
-        else:
-            username = None
-        if "addField" in request.form:
-            fname = request.form["fname"]
-            name = request.form["name"]
-            description = request.form["description"]
-            type = request.form["type"]
-            options = request.form["options"]
-            form = Form.query.filter_by(name=fname).first()
-            form = Form.query.filter_by(id=id).first()
-            if form.user == username:
-                questions = ast.literal_eval(form.questions)
-                try:
-                    lastID = questions[-1][0]
-                except:
-                    lastID = 0
-                if options == "":
-                    questions.append([(lastID + 1),name,description,type])
-                else:
-                    questions.append([(lastID + 1),name,description,type,ast.literal_eval(options)])
-                form.questions = str(questions)
-                db.session.commit()
-                row = []
-                row.append("Timestamp")
-                for i in range(len(questions)):
-                    row.append(questions[i][1])
-                with open(form.answers, 'a') as csvFile:
-                    csvWriter = csv.writer(csvFile, lineterminator="\n")
-                    csvWriter.writerow(row)
-                    csvFile.close()
-                return redirect(url_for("manageEvents"))
-            return redirect(url_for("manageEvents"))
-        if "editField" in request.form:
-            fname = request.form["fname"]
-            name = request.form["name"]
-            newName = request.form["newName"]
-            description = request.form["description"]
-            password = request.form["password"]
-            form = Form.query.filter_by(name=fname).first() # get form name
-            questions = ast.literal_eval(form.questions)
-            if form.user == username:
-                for i in range(len(questions)):
-                    if questions[i][1] == name:
-                        if newName != "":
-                            questions[i][1] = newName
-                        if description != "":
-                            questions[i][2] = description
-                        if password != None:
-                            salt = "ITSASECRET"
-                            hashedCurrPass = password + salt
-                            hashedCurrPass = hashlib.md5(hashedCurrPass.encode())
-                            hashedCurrPass = hashedCurrPass.hexdigest()
-                            userDetails = User.query.filter_by(username=username).first()
-                            if userDetails.password == hashedCurrPass:
-                                questions.pop(i)
-                                try:
-                                    for j in range(len(questions)):
-                                        questions[j+i][0] -= 1
-                                except IndexError:
-                                    break
-                                break
-                form.questions = str(questions)
-                db.session.commit()
-                row = []
-                row.append("Timestamp")
-                for i in range(len(questions)):
-                    row.append(questions[i][1])
-                with open(form.answers, 'a') as csvFile:
-                    csvWriter = csv.writer(csvFile, lineterminator="\n")
-                    csvWriter.writerow(row)
-                    csvFile.close()
-                return redirect(url_for("manageEvents"))
-            return redirect(url_for("manageEvents"))
-
-@app.route("/events/questions/edit", methods=["GET", "POST"])
-def manageEventFormsQuestionsEdit():
-    if request.method == "POST":
-        if "username" in session:
-            username = session['username']
-        else:
-            username = None
-        if "addField" in request.form:
-            fname = request.form["fname"]
-            name = request.form["name"]
-            description = request.form["description"]
-            type = request.form["type"]
-            options = request.form["options"]
-            form = Form.query.filter_by(name=fname).first()
-            if form.user == username:
-                questions = ast.literal_eval(form.questions)
-                try:
-                    lastID = questions[-1][0]
-                except:
-                    lastID = 0
-                if options == "":
-                    questions.append([(lastID + 1),name,description,type])
-                else:
-                    questions.append([(lastID + 1),name,description,type,ast.literal_eval(options)])
-                form.questions = str(questions)
-                db.session.commit()
-                row = []
-                row.append("Timestamp")
-                for i in range(len(questions)):
-                    row.append(questions[i][1])
-                with open(form.answers, 'a') as csvFile:
-                    csvWriter = csv.writer(csvFile, lineterminator="\n")
-                    csvWriter.writerow(row)
-                    csvFile.close()
-                return redirect(url_for("manageEvents"))
-            return redirect(url_for("manageEvents"))
-        if "editField" in request.form:
-            fname = request.form["fname"]
-            name = request.form["name"]
-            newName = request.form["newName"]
-            description = request.form["description"]
-            password = request.form["password"]
-            form = Form.query.filter_by(name=fname).first()
-            questions = ast.literal_eval(form.questions)
-            if form.user == username:
-                for i in range(len(questions)):
-                    if questions[i][1] == name:
-                        if newName != "":
-                            questions[i][1] = newName
-                        if description != "":
-                            questions[i][2] = description
-                        if password != None:
-                            salt = "ITSASECRET"
-                            hashedCurrPass = password + salt
-                            hashedCurrPass = hashlib.md5(hashedCurrPass.encode())
-                            hashedCurrPass = hashedCurrPass.hexdigest()
-                            userDetails = User.query.filter_by(username=username).first()
-                            if userDetails.password == hashedCurrPass:
-                                questions.pop(i)
-                                try:
-                                    for j in range(len(questions)):
-                                        questions[j+i][0] -= 1
-                                except IndexError:
-                                    break
-                                break
-                form.questions = str(questions)
-                db.session.commit()
-                row = []
-                row.append("Timestamp")
-                for i in range(len(questions)):
-                    row.append(questions[i][1])
-                with open(form.answers, 'a') as csvFile:
-                    csvWriter = csv.writer(csvFile, lineterminator="\n")
-                    csvWriter.writerow(row)
-                    csvFile.close()
-                return redirect(url_for("manageEvents"))
-            return redirect(url_for("manageEvents"))
+#function to allow people to edit form questions
+@app.route("/events/forms/questions/<id>", methods=["GET", "POST"]) #URL to edit form questions
+def editFormsQuestions(id): #function to edit form questions
+    if request.method == "GET": #user loads page
+        if "username" in session: #user logged iin
+            username = session['username'] #get username
+        else: #not logged in
+            username = None #no username
+        form = Form.query.filter_by(id=id).first() #get form
+        if form != None: #form exists
+            if username == form.user: #user is authorised
+                questions = ast.literal_eval(form.questions) #get questions
+                return render_template("forms_questions.html", username=username, form=form, questions=questions, info="You can edit and add questions to your form here.") #render page with info
+            else: #user not authorised
+                form = Form(id=id,name="HEY!",user="Somebody Else",event="Unknown",description="This isn't your form, so don't touch it.",questions=[[1,"Are you dumb?","This is not a test.","radio",["YES","NO"]],[2, "Should you be here?","Is this your event?","radio",["YES","NO"]]],answers="") #troll form
+                questions = form.questions #get questions
+                return render_template("forms_questions.html", username=username, form=form, questions=questions, info="You can edit and add questions to your form here.") #load troll page
+        else: #no such form
+            form = Form(id=id,name="HEY!",user="To be discovered",event="Unknown", description="The form doesn't even exist yet. Or it has been deleted.",questions=[],answers="") #troll form
+            questions = form.questions #get questions
+            return render_template("forms_questions.html", username=username, form=form, questions=questions, info="You can edit and add questions to your form here.") #load troll page
+    elif request.method == "POST": #userr submits form
+        if "username" in session: #user is logged in
+            username = session['username'] #get username
+        else: #not logged in
+            username = None #no username
+        if "addField" in request.form: #user wants to add a field
+            name = request.form["name"] #get field name
+            description = request.form["description"] #get field description
+            type = request.form["type"] #get field type
+            options = request.form["options"] #get field options (if any)
+            form = Form.query.filter_by(id=id).first() #get form
+            if form != None: #form exists
+                if form.user == username: #user is authorised
+                    questions = ast.literal_eval(form.questions) #get questions
+                    try: #expect a possible error
+                        lastID = questions[-1][0] #get ID of the last question
+                    except: #eror in getting last ID
+                        lastID = 0 #0 since there are no past questions
+                    if options == "": #no options
+                        questions.append([(lastID + 1),name,description,type]) #add question to question list
+                    else: #options given
+                        questions.append([(lastID + 1),name,description,type,ast.literal_eval(options)]) #add question to question list
+                    form.questions = str(questions) #edit questions in form
+                    db.session.commit() #save changes
+                    row = [] #prepare blank row
+                    row.append("Timestamp") #add default timestamp header
+                    for i in range(len(questions)): #loop over questions
+                        row.append(questions[i][1]) #add question name to row
+                    with open(form.answers, 'a') as csvFile: #open CSV file
+                        csvWriter = csv.writer(csvFile, lineterminator="\n") #CSV writer
+                        csvWriter.writerow(row) #write row in CSV file
+                        csvFile.close() #close CSV file
+                    return redirect(url_for("manageEvents", success="Question successfully added."))
+                else: #user not authorised
+                    form = Form(id=id,name="HEY!",user="Somebody Else",event="Unknown",description="This isn't your form, so don't touch it.",questions=[[1,"Are you dumb?","This is not a test.","radio",["YES","NO"]],[2, "Should you be here?","Is this your event?","radio",["YES","NO"]]],answers="") #troll form
+                    questions = form.questions #get questions
+                    return render_template("forms_questions.html", username=username, form=form, questions=questions, error="You aren't allowed to edit this form.", info="You can edit and add questions to your form here.") #load troll page
+            else: #no such form
+                form = Form(id=id,name="HEY!",user="To be discovered",event="Unknown", description="The form doesn't even exist yet. Or it has been deleted.",questions=[],answers="") #troll form
+                questions = form.questions #get questions
+                return render_template("forms_questions.html", username=username, form=form, questions=questions, error="No form found.", info="You can edit and add questions to your form here.") #load troll page
+        if "editField" in request.form: #user wants to edit field
+            name = request.form["name"] #get field name
+            newName = request.form["newName"] #get new field name
+            description = request.form["description"] #get new field description
+            password = request.form["password"] #get user password
+            form = Form.query.filter_by(id=id).first() # get form
+            if form != None: #form exists
+                if form.user == username: #user authorised
+                    questions = ast.literal_eval(form.questions) #get form questions
+                    for i in range(len(questions)): #loop over questions
+                        if questions[i][1] == name: #if question is the question to be edited
+                            if newName != "": #user wants to change name
+                                questions[i][1] = newName #change name
+                            if description != "": #user wants to change description
+                                questions[i][2] = description #change description
+                            if password != None: #user wants to delete field
+                                salt = "ITSASECRET" #salt for password
+                                hashedPassword = password + salt #salt password
+                                hashedPassword  = hashlib.md5(hashedPassword .encode()) #encrypt password with md5 hash
+                                hashedPassword  = hashedPassword.hexdigest() #convert to string
+                                user = User.query.filter_by(username=username).first() #get user
+                                if user.password == hashedPassword : #user password is correct
+                                    questions.pop(i) #remove question
+                                    try: #expect a possible error
+                                        for j in range(len(questions)): #loop over questions
+                                            questions[j+i][0] -= 1 #change IDs of questions after that
+                                    except IndexError: #out of list
+                                        break #get out of loop
+                    form.questions = str(questions) #change questions
+                    db.session.commit() #save changes
+                    row = [] #prepare blank row
+                    row.append("Timestamp") #add timestamp field
+                    for i in range(len(questions)): #loop over questions
+                        row.append(questions[i][1]) #add question name to row
+                    with open(form.answers, 'a') as csvFile: #open CSV file
+                        csvWriter = csv.writer(csvFile, lineterminator="\n") #prepare CSV writer
+                        csvWriter.writerow(row) #write out CSV row
+                        csvFile.close() #close CSV file
+                    return redirect(url_for("manageEvents", success="Question successfully edited.")) #return with success message
+                else: #user not authorised
+                    form = Form(id=id,name="HEY!",user="Somebody Else",event="Unknown",description="This isn't your form, so don't touch it.",questions=[[1,"Are you dumb?","This is not a test.","radio",["YES","NO"]],[2, "Should you be here?","Is this your event?","radio",["YES","NO"]]],answers="") #troll form
+                    questions = form.questions #get questions
+                    return render_template("forms_questions.html", username=username, form=form, questions=questions, error="You aren't allowed to edit this form.", info="You can edit and add questions to your form here.") #load troll page
+            else: #no such form
+                form = Form(id=id,name="HEY!",user="To be discovered",event="Unknown", description="The form doesn't even exist yet. Or it has been deleted.",questions=[],answers="") #troll form
+                questions = form.questions #get questions
+                return render_template("forms_questions.html", username=username, form=form, questions=questions, error="No form found.", info="You can edit and add questions to your form here.") #load troll page
 
 #allows users to view answers to their forms
 @app.route("/events/forms/answers/<id>", methods=["GET"]) #URL to view form answers
@@ -860,7 +799,7 @@ def fillForm(id): #function to fill in a form
             return redirect(url_for("findEvents", error="Form doesn't exist.")) #return to find events page with message
 
 #page to direct people to manage their account
-@app.route("/account", methods=["GET", "POST"]) #allows user to edit account details
+@app.route("/account", methods=["GET", "POST"]) #URL to allow user to edit account details
 def account(): #function to edit account details
     if request.method == "GET": #user loads page
         if "username" in session: #user logged in
@@ -916,8 +855,8 @@ def changeEmail(): #function to change email
             username = session['username'] #get username
         else: #not logged in
             username = None #no username
-        oldEmail = request.form['oldemail'] #get old username
-        newEmail = request.form['newemail'] #get new username
+        oldEmail = request.form['oldemail'] #get old email
+        newEmail = request.form['newemail'] #get new email
         user = User.query.filter_by(username=username).first() #get user details
         if username == None: #if not logged in
             return render_template("change_email.html", username=username, error="You are not logged in.", info="You can change your email here.") #render page with messages
@@ -967,8 +906,8 @@ def changePassword(): #function to change password
             return render_template("change_password.html", username=username, error="You are not logged in.", info = "You can change your password here.") #return with error message
 
 #allows users to delete (unconfirm their account)
-@app.route("/account/delete_account", methods=["GET", "POST"]) #allows user to change password
-def deleteAccount():
+@app.route("/account/delete_account", methods=["GET", "POST"]) #URL to allow user to delete their account
+def deleteAccount(): #function to delete account
     if request.method == "GET": #user loads page
         if "username" in session: #user logged in
             username = session['username'] #get username
@@ -993,8 +932,8 @@ def deleteAccount():
             elif password != confirmpass: #passwords dont match
                 return render_template("delete_account.html", username=username, error="The password and confirmation password do not match.", info = "You can change your password here.") #return with error message
             else: #passwords match
-                user.confirmed = "N"
-                email = user.email
+                user.confirmed = "N" #change account status
+                email = user.email #get user's email
                 msg = Message('Event Management Account Details for ' + str(username), sender = 'eventmanagementproj@gmail.com', recipients = [email]) #prepare message to be sent to user
                 msg.html = '<h1 style="text-align: center;">Hey ' + str(username) + "!</h1></br>" + "<h2 style='text-align: center;'>We have received your request to delete your account.</h2></br>" + '<h3 style="text-align: center;">Re-verify your account <a href=' + "https://eventmanagement.pythonanywhere.com/confirmation/" + hashlib.md5(username.encode()).hexdigest() + ">here</a>!</h3>" + '</br><h4 style="text-align: center;">If you have any queries you may send an email to us at eventmanagementproj@gmail.com!</h4>' #code for body of email
                 mail.send(msg) #send message to user
