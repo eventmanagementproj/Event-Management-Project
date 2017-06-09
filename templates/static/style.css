@@ -14,6 +14,7 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    font-size: 32px;
 }
 .navbar li {
     float: left;
@@ -25,7 +26,7 @@ body {
     padding: 14px 16px;
     text-decoration: none;
 }
-    .navbar li a:hover{
+.navbar li a:hover{
     text-decoration: none;
     color: white;
     }
