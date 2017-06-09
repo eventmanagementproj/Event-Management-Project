@@ -1,0 +1,103 @@
+/*styles for webpage in general */
+html {
+    font-family: verdana;
+    background-image: url("/static/ri_seamless.png");
+    background-size: 100%;
+    color: white;
+}
+body {
+    margin: 10px;
+}
+/* styles for navbar */
+.navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+.navbar li {
+    float: left;
+}
+.navbar li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+    .navbar li a:hover{
+    text-decoration: none;
+    color: white;
+    }
+.navbar li a:hover:not(.active) {
+    text-decoration: none;
+}
+.active {
+    text-decoration: none;
+    font-weight: bold;
+}
+/* styles for timeline */
+.timeline-header{
+    font-size: 64px;
+    margin: 20px;
+}
+.timeline li{
+    font-size: 24px;
+    list-style-type: none;
+}
+.author {
+    list-style-type: none;
+    font-size: 18px;
+    font-style: italic;
+    margin: 20px;
+}
+/*styles for table viewing*/
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    background-color: white;
+}
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+/* styles for alert boxes */
+.error {
+    background-color: #F44336;
+    border-radius: 20px;
+    padding: 10px;
+}
+.success {
+    background-color: #4CAF50;
+    border-radius: 20px;
+    padding: 10px;
+}
+.info {
+    background-color: #2196F3;
+    border-radius: 20px;
+    padding: 10px;
+}
+/* styles for forms */
+input {
+    height: 32px;
+    margin: 10px;
+}
+textarea{
+    width: 243px;
+    height: 150px;
+    margin: 10px;
+}
+select {
+    margin: 10px;
+}
+.btn-default {
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 10px;
+    color: white;
+}

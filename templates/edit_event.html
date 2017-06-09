@@ -1,54 +1,7 @@
 <html>
     <head>
-        <!-- Colour scheme
-            #e7f0d2
-            #d2ea9b
-            #abcb89
-            #83b271
-        -->
         <title>Event Management Event Editing!</title>
-        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-        <style>
-            .navbar {
-                list-style-type: none;
-                margin: 0;
-                padding: 0;
-                overflow: hidden;
-                background-color: #83b271;
-            }
-            .navbar li {
-                float: left;
-            }
-            .navbar li a {
-                display: block;
-                color: white;
-                text-align: center;
-                padding: 14px 16px;
-                text-decoration: none;
-            }
-            .navbar li a:hover{
-                text-decoration: none;
-                color: black;
-            }
-            .navbar li a:hover:not(.active) {
-                background-color: #abcb89;
-                text-decoration: none;
-            }
-            .active {
-                background-color: #d2ea9b;
-                text-decoration: none;
-                font-weight: bold;
-            }
-            .right{
-                float: right;
-            }
-            .long{
-                width: 500px;
-            }
-            html {
-                font-family: verdana;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="/static/style.css">
     </head>
     <body>
         <ul class="navbar">
@@ -62,12 +15,12 @@
             {% if username %}<li><a href="/logout" class="right">Logout</a></li>{% endif %}
         </ul>
         {% if success %}
-        <div class="w3-panel w3-green w3-round-large">
+        <div class="success">
             <p style="font-size:32px;"><h3><strong>Success</strong></h3><p>{{ success }}</p></p>
         </div>
         {% endif %}
         {% if info %}
-        <div class="w3-panel w3-blue w3-round-large">
+        <div class="info">
             <p style="font-size:32px;"><h3><strong>Information</strong></h3><p>{{ info }}</p></p>
         </div>
         {% endif %}
