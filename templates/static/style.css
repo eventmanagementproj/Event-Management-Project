@@ -102,3 +102,13 @@ select {
     border-radius: 10px;
     color: white;
 }
+/* styles for features */
+.features{
+    list-style
+}
+.outerFeatures{
+    list-style-type: none;
+}
+.innerFeatures {
+    list-style-type: none;
+}
