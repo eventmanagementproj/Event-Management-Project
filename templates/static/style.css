@@ -57,6 +57,7 @@ table {
     border-collapse: collapse;
     width: 100%;
     background-color: white;
+    color: black;
 }
 td, th {
     border: 1px solid #dddddd;
