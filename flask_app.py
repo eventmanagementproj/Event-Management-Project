@@ -284,6 +284,12 @@ def contact(): #contact function
         mail.send(msg) #send query
         return redirect(url_for("home", success="Your query has been sent.")) #return to home with notification
 
+#features page which allows user to understand features of website
+@app.route("/features", methods = ["GET"]) #URL to view features
+def features(): #function to view features
+    username = getUsername() #get username
+    return render_template("features.html", username=username, info="You can understand the features of this website here! Scroll down for more information!") #render page
+
 #events page which branches out into event creation, event management, and event finding
 @app.route("/events", methods=["GET"]) #URL for events page
 def events(): #events function
