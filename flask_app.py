@@ -10,7 +10,7 @@ import datetime #import timestamp generator
 
 #setting up website
 app = Flask(__name__) #configure flask
-app.secret_key = "" #secret key for username session
+app.secret_key = "ITSASECRET" #secret key for username session
 sslify = SSLify(app) #include HTTPS:// enforcing
 mail = Mail(app) #include mailing system
 
@@ -18,7 +18,7 @@ mail = Mail(app) #include mailing system
 app.config['MAIL_SERVER']='smtp.gmail.com' #use gmail
 app.config['MAIL_PORT'] = 465 #mail port
 app.config['MAIL_USERNAME'] = 'eventmanagementproj@gmail.com' #email
-app.config['MAIL_PASSWORD'] = '' #password
+app.config['MAIL_PASSWORD'] = 'ITSASECRET' #password
 app.config['MAIL_USE_TLS'] = False #security type
 app.config['MAIL_USE_SSL'] = True #security type
 mail = Mail(app) #include mailing system, we don't know why this has to be done twice
@@ -26,7 +26,7 @@ mail = Mail(app) #include mailing system, we don't know why this has to be done 
 #setting up database
 SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format( #database host address
     username="EventManagement", #account username
-    password="", #account password
+    password="ITSASECRET", #account password
     hostname="EventManagement.mysql.pythonanywhere-services.com", #host address
     databasename="EventManagement$users", #table name
 )
@@ -95,7 +95,7 @@ def getUsername(): #function to get username as it is repeatedly used
     return username #give back username
 
 def getHashed(text): #function to get hashed username/password as it is reapeatedly used
-    salt = "" #salt for password security
+    salt = "ITSASECRET" #salt for password security
     hashed = text + salt #salting password
     hashed = hashlib.md5(hashed.encode()) #encrypting with md5 hash
     hashed = hashed.hexdigest() #converting to string
@@ -122,7 +122,6 @@ def login(): #login function
         password = request.form["password"] #entered password
         hashedPassword = getHashed(password) #get hashed version
         userDetails = User.query.filter_by(username=username).first() #check if user exists and get account information
-        username = getUsername() #get username
         if userDetails is None: #no user found
             return render_template("login.html", error="Invalid username or password.", username=username) #return to same page with error message
         elif hashedPassword != userDetails.password: #wrong password
