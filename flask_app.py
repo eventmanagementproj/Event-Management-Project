@@ -386,6 +386,9 @@ def editEvent(id): #function to edit event
                 if name != "": #user wants to change name
                     checkEvent = Event.query.filter_by(name=name).first() #check if name is used
                     if checkEvent is None: #name not used
+                        forms = Form.query.filter_by(event=event.name).all() #get all forms
+                        for form in forms: #loop over forms
+                            form.event = name #change event name linked to form
                         event.name = name #change name
                 if description != "": #user wants to change description
                     event.description = description #change description
