@@ -435,7 +435,8 @@ def createForm(id): #function to create a form
             if event.user == username: #if user is authorised
                 check = Form.query.filter_by(name=name).first() #check if name is used
                 if check is None: #name not used
-                    form = Form(name=name,user=username,event=event.name,description=description,questions="[]",answers="/home/EventManagement/mysite/csv/" + str(id) +".csv") #prepare form
+                    lastForm = Form.query.order_by(Form.id.desc()).first() #get last form
+                    form = Form(name=name,user=username,event=event.name,description=description,questions="[]",answers="/home/EventManagement/mysite/csv/" + str(lastForm.id+1) +".csv") #prepare form
                     db.session.add(form) #add form
                     db.session.commit() #save changes
                     return redirect(url_for("manageEvents", success="Form successfully created!"))
