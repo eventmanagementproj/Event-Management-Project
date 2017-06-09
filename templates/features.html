@@ -1,0 +1,126 @@
+<html>
+    <head>
+        <title>Event Management!</title>
+        <link rel="stylesheet" type="text/css" href="/static/style.css">
+    </head>
+    <body>
+        <ul class="navbar">
+            <li><a href="/"class="active">Home</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/signup">Signup</a></li>
+            <li><a href="/timeline">Timeline</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/events">Events</a></li>
+            {% if username %}<li><a href="/account" class="right">Hey {{ username }}! / Account Settings</a></li>{% endif %}
+            {% if username %}<li><a href="/logout" class="right">Logout</a></li>{% endif %}
+        </ul>
+        {% if info %}
+        <div class="info">
+            <p style="font-size:32px;"><h3><strong>Information</strong></h3><p>{{ info }}</p></p>
+        </div>
+        {% endif %}
+        <p style="font-size: 32px;">All the features are listed here.</p>
+        <ol class="features">
+            <li><p style="font-size: 32px;">User Accounts</p></li>
+            <ul class="outerFeatures">
+                <li><p style="font-size: 32px;">Account Entry</p></li>
+                <ul class="innerFeatures">
+                    <li><p style="font-size: 32px;">Login</p></li>
+                    <p>Users can log into their accounts.</p>
+                    <li><p style="font-size: 32px;">Forgot Username</p></li>
+                    <p>Users can receive an email with a list of their account usernames in case they forget their username.</p>
+                    <li><p style="font-size: 32px;">Forgot Password</p></li>
+                    <p>Users can receive an email link to reset the password for their account if they can’t remember it.</p>
+                </ul>
+                <li><p style="font-size: 32px;">Account Creation</p></li>
+                <ul class="innerFeatures">
+                    <li><p style="font-size: 32px;">Signup</p></li>
+                    <p>Users can sign up for an account if they do not have one. A confirmation email with the confirmation link for their account is sent to them.</p>
+                    <li><p style="font-size: 32px;">Confirmation</p></li>
+                    <p>Users can confirm their accounts so they can be activated for use.</p>
+                </ul>
+                <li><p style="font-size: 32px;">Account Settings</p></li>
+                <ul class="innerFeatures">
+                    <li><p style="font-size: 32px;">Change Username</p></li>
+                    <p>Users can change their username if they want to.</p>
+                    <li><p style="font-size: 32px;">Change Password</p></li>
+                    <p>Users can change their password if they feel the need to.</p>
+                    <li><p style="font-size: 32px;">Change Email</p></li>
+                    <p>Users can change their email if they change their email.</p>
+                    <li><p style="font-size: 32px;">Delete Account</p></li>
+                    <p>Users can delete their account if they don’t want it anymore. Note that this doesn’t exactly delete the account; it only revokes it’s confirmed status. The account confirmation link is sent to the user’s email if they ever want to confirm it again.</p>
+                </ul>
+            </ul>
+            <li><p style="font-size: 32px;">Events</p></li>
+            <ul class="outerFeatures">
+                <li><p style="font-size: 32px;">Event Creation</p></li>
+                <ul class="innerFeatures">
+                    <li><p style="font-size: 32px;">Create Event</p></li>
+                    <p>Users can create an event.</p>
+                </ul>
+                <li><p style="font-size: 32px;">Event Management</p></li>
+                <ul class="innerFeatures">
+                    <li><p style="font-size: 32px;">View All Events</p></li>
+                    <p>Users can see all their events.</p>
+                    <li><p style="font-size: 32px;">Edit Event Details</p></li>
+                    <p>Users can modify the name and description for one of their events.</p>
+                    <li><p style="font-size: 32px;">Delete An Event</p></li>
+                    <p>Users can delete an event through the event editing page.</p>
+                </ul>
+                <li><p style="font-size: 32px;">Event Finding</p></li>
+                <ul class="innerFeatures">
+                    <li><p style="font-size: 32px;">Searching For Events</p></li>
+                    <p>Users can search for a specific event even if they are not logged in.</p>
+                    <li><p style="font-size: 32px;">View An Event</p></li>
+                    <p>Users can view a specific event even if they are not signed in.</p>
+                </ul>
+            </ul>
+            <li><p style="font-size: 32px;">Forms</p></li>
+            <ul class="outerFeatures">
+                <li><p style="font-size: 32px;">Form Creation</p></li>
+                <ul class="innerFeatures">
+                    <li><p style="font-size: 32px;">Create Form</p></li>
+                    <p>Users can create a form for an event.</p>
+                </ul>
+                <li><p style="font-size: 32px;">Form Management</p></li>
+                <ul class="innerFeatures">
+                    <li><p style="font-size: 32px;">View All Forms</p></li>
+                    <p>Users can view all forms linked to an event.</p>
+                    <li><p style="font-size: 32px;">Edit Form Details</p></li>
+                    <p>Users can edit the details for a form.</p>
+                    <li><p style="font-size: 32px;">Delete A Form</p></li>
+                    <p>Users can delete a form through the form editing page.</p>
+                    <li><p style="font-size: 32px;">Edit Form Questions</p></li>
+                    <p>Users can create, edit, and delete questions for a form here.</p>
+                    <li><p style="font-size: 32px;">View Form Answers</p></li>
+                    <p>Users can view answers to a form.</p>
+                    <li><p style="font-size: 32px;">Download Form Answers</p></li>
+                    <p>Users can download answers to a form.</p>
+                </ul>
+                <li><p style="font-size: 32px;">Form Finding</p></li>
+                <ul class="innerFeatures">
+                    <li><p style="font-size: 32px;">View All Forms For An Event</p></li>
+                    <p>Users can look at all forms for an event.</p>
+                    <li><p style="font-size: 32px;">View A Form</p></li>
+                    <p>Users can view a specific form here.</p>
+                    <li><p style="font-size: 32px;">Filling In A Form</p></li>
+                    <p>Users can fill in a form and submit it here.</p>
+                </ul>
+            </ul>
+            <li><p style="font-size: 32px;">Miscellaneous</p></li>
+            <ul class="outerFeatures">
+                <li><p style="font-size: 32px;">Miscellaneous</p></li>
+                <ul class="innerFeatures">
+                    <li><p style="font-size: 32px;">Viewing The Homepage</p></li>
+                    <p>Users can see the homepage.</p>
+                    <li><p style="font-size: 32px;">Contacting the developers</p></li>
+                    <p>Users can contact the developers and send their message or query.</p>
+                    <li><p style="font-size: 32px;">Viewing The Timeline</p></li>
+                    <p>Users can see the timeline.</p>
+                    <li><p style="font-size: 32px;">Viewing The Features</p></li>
+                    <p>Users can view the features of the website.</p>
+                </ul>
+            </ul>
+        </ol>
+    </body>
+</html>
