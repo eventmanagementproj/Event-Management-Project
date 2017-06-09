@@ -10,7 +10,7 @@ import datetime #import timestamp generator
 
 #setting up website
 app = Flask(__name__) #configure flask
-app.secret_key = "ngmhjlimjl" #secret key for username session
+app.secret_key = "" #secret key for username session
 sslify = SSLify(app) #include HTTPS:// enforcing
 mail = Mail(app) #include mailing system
 
@@ -18,7 +18,7 @@ mail = Mail(app) #include mailing system
 app.config['MAIL_SERVER']='smtp.gmail.com' #use gmail
 app.config['MAIL_PORT'] = 465 #mail port
 app.config['MAIL_USERNAME'] = 'eventmanagementproj@gmail.com' #email
-app.config['MAIL_PASSWORD'] = 'ngmhjlimjl' #password
+app.config['MAIL_PASSWORD'] = '' #password
 app.config['MAIL_USE_TLS'] = False #security type
 app.config['MAIL_USE_SSL'] = True #security type
 mail = Mail(app) #include mailing system, we don't know why this has to be done twice
@@ -26,7 +26,7 @@ mail = Mail(app) #include mailing system, we don't know why this has to be done 
 #setting up database
 SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format( #database host address
     username="EventManagement", #account username
-    password="ngmhjlimjl", #account password
+    password="", #account password
     hostname="EventManagement.mysql.pythonanywhere-services.com", #host address
     databasename="EventManagement$users", #table name
 )
@@ -95,7 +95,7 @@ def getUsername(): #function to get username as it is repeatedly used
     return username #give back username
 
 def getHashed(text): #function to get hashed username/password as it is reapeatedly used
-    salt = "ngmhjlimjl" #salt for password security
+    salt = "" #salt for password security
     hashed = text + salt #salting password
     hashed = hashlib.md5(hashed.encode()) #encrypting with md5 hash
     hashed = hashed.hexdigest() #converting to string
@@ -122,12 +122,13 @@ def login(): #login function
         password = request.form["password"] #entered password
         hashedPassword = getHashed(password) #get hashed version
         userDetails = User.query.filter_by(username=username).first() #check if user exists and get account information
+        username = getUsername() #get username
         if userDetails is None: #no user found
-            return render_template("login.html", error="Invalid username or password.") #return to same page with error message
+            return render_template("login.html", error="Invalid username or password.", username=username) #return to same page with error message
         elif hashedPassword != userDetails.password: #wrong password
-            return render_template("login.html", error="Invalid username or password.") #return to same page with error message
+            return render_template("login.html", error="Invalid username or password.", username=username) #return to same page with error message
         elif userDetails.confirmed == "N": #user account not verified
-            return render_template("login.html", error="Account not verified.") #return to same page with error message
+            return render_template("login.html", error="Account not verified.", username=username) #return to same page with error message
         else: #user account exists, is verified, and password is correct
             session["username"] = username #set username session
             return redirect(url_for("home", success="You are now logged in!")) #redirect to homepage with success message
@@ -230,11 +231,14 @@ def signup(): #signup function
                     mail.send(msg) #send message to user
                     return redirect(url_for("home", success="You have signed up for an account! Please check your email for a confirmation email."))
                 else: #username not available
-                    return render_template("signup.html", error = "Username already exists. Please pick another username.") #return to same page with error message
+                    username = getUsername() #get username
+                    return render_template("signup.html", error = "Username already exists. Please pick another username.", username=username) #return to same page with error message
             else: #passwords do not match
-                return render_template("signup.html", error = "Your passwords do not match.") #return to same page with error message
+                username = getUsername() #get username
+                return render_template("signup.html", error = "Your passwords do not match.", username=username) #return to same page with error message
         else: #no password entered
-            return render_template("signup.html", error = "You need to enter a password.") #return to same page with error message
+            username = getUsername() #get username
+            return render_template("signup.html", error = "You need to enter a password.", username=username) #return to same page with error message
 
 #confirmation for accounts so they can be used
 @app.route("/confirmation/<userHash>", methods=["GET","POST"]) #URL for confirmation given in email
@@ -568,7 +572,7 @@ def editFormsQuestions(id): #function to edit form questions
                             if description != "": #user wants to change description
                                 questions[i][2] = description #change description
                             if password != None: #user wants to delete field
-                                salt = "ngmhjlimjl" #salt for password
+                                salt = "ITSASECRET" #salt for password
                                 hashedPassword = password + salt #salt password
                                 hashedPassword  = hashlib.md5(hashedPassword .encode()) #encrypt password with md5 hash
                                 hashedPassword  = hashedPassword.hexdigest() #convert to string
